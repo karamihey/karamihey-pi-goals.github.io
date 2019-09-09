@@ -1,0 +1,66 @@
+// -----------------------------------------------------------------------------
+//  Objects > Shared > Form Controls
+// -----------------------------------------------------------------------------
+//  01. Base elements
+//  02. Checkbox
+//  03. Layouts
+//  04. Editable inputs
+// -----------------------------------------------------------------------------
+
+//  01. Base elements
+.form-control {
+  padding-bottom: 30px;
+  padding-top: 22px;
+  position: relative;
+
+  &.is-disabled {
+    opacity: .5;
+    pointer-events: none;
+  }
+
+  .form-control-label {
+    font-size: 18px;
+    left: 8px;
+    position: absolute;
+    top: 39px;
+    transform: translate(0, 0) scale(1);
+    transform-origin: left;
+    transition: transform $time-form-label cubic-bezier(0, 0, .2, 1) 0ms;
+
+    &.is-hidden {
+      visibility: hidden;
+    }
+
+    &.is-shifted {
+      transform: translate(0, -42px) scale(.8);
+    }
+  }
+
+  .form-control-label,
+  .form-control-error,
+  .form-control-hint {
+    pointer-events: none;
+  }
+
+  .form-control-error,
+  .form-control-hint {
+    font-size: 15px;
+    padding-left: 5px;
+  }
+
+  .form-control-error {
+    color: $c-form-error;
+  }
+
+  .form-field {
+    background-color: $c-form-control-input-bg;
+    border: 0;
+    border-bottom: 1px solid $c-form-control-input-border;
+    box-sizing: border-box;
+    display: block;
+    min-height: 43px;
+    outline: none;
+    padding: 2px 5px 0;
+    width: 100%;
+  }
+}

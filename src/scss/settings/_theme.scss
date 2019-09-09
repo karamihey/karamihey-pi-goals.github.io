@@ -2,5 +2,10 @@
 //  Settings > Theme
 // -----------------------------------------------------------------------------
 
-$primary: $c-yellow;
-$secondary: $c-black;
+@import "palette";
+
+$c-preloader-overlay: rgba($c-white, .6);
+
+$c-form-error: $c-red;
+$c-form-control-input-bg: transparent;
+$c-form-control-input-border: rgba($c-black, .42);

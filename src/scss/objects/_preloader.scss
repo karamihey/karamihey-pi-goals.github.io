@@ -1,0 +1,13 @@
+// -----------------------------------------------------------------------------
+//  Objects > Preloader
+// -----------------------------------------------------------------------------
+
+.overlay {
+  background-color: $c-preloader-overlay;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: $z-preloader-overlay;
+}

@@ -1,20 +1,21 @@
+// libraries
 import React from 'react';
+// components
+import Preloader from 'components/shared/Preloader';
+import Input from 'components/shared/Input';
 
 const App = () => (
   <div className="App">
-    <header className="App-header">
-      <p>
-        Edit and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Learn React
-      </a>
-    </header>
+    <Preloader />
+
+    <Input
+      handleChangeCallback={value => {
+        console.error('ololo', value);
+      }}
+      id="email"
+      label="E-mail"
+      name="email"
+    />
   </div>
 );
 
