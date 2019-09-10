@@ -4,7 +4,17 @@
 
 @import "palette";
 
+$c-primary: $c-pink;
+$c-secondary: $c-orange;
+
+$c-body-bg: $c-grey;
+
 $c-preloader-overlay: rgba($c-white, .6);
+
+$c-primary-button-bg: linear-gradient(45deg, rgba($c-primary, .3), rgba($c-secondary, .8));
+$c-primary-button-bg-active: linear-gradient(45deg, rgba($c-primary, .5), rgba($c-secondary, 1));
+$c-primary-button-shadow: rgba($c-pink-1, .3);
+$c-primary-button-text: $c-white;
 
 $c-form-error: $c-red;
 $c-form-control-input-bg: transparent;

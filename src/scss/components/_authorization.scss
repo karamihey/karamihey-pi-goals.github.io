@@ -1,9 +1,8 @@
 // -----------------------------------------------------------------------------
-//  Settings
+//  Components > Authorization
 // -----------------------------------------------------------------------------
 
-@import "typography";
-@import "theme";
-@import "breakpoints";
-@import "animations";
-@import "z-indexes";
+.authorization-pages {
+  margin: 40px auto;
+  max-width: 550px;
+}

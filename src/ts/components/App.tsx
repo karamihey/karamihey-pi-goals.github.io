@@ -1,21 +1,16 @@
 // libraries
 import React from 'react';
+import { Switch, Route } from 'react-router-dom';
+// constants
+import routes from 'constants/routes';
 // components
-import Preloader from 'components/shared/Preloader';
-import Input from 'components/shared/Input';
+import Authorization from 'components/Authorization';
 
 const App = () => (
   <div className="App">
-    <Preloader />
-
-    <Input
-      handleChangeCallback={value => {
-        console.error('ololo', value);
-      }}
-      id="email"
-      label="E-mail"
-      name="email"
-    />
+    <Switch>
+      <Route component={Authorization} path={routes.authorization} />
+    </Switch>
   </div>
 );
 

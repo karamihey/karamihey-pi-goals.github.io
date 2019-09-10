@@ -1,26 +1,57 @@
 // libraries
-import React from 'react';
+import React, { useState } from 'react';
 // types
-import { IProps, IState } from 'components/shared/Input/types';
+import { InputComponentProps, InputComponentState, InputValueTypes } from 'types/forms/input';
+// utils
+import { validateRequired, validateMinLength, validateMaxLength } from 'utils/validation';
 
 const Input = ({
-  id, label, name, initialValue, handleChangeCallback, handleValidationCallback, type,
-}: IProps) => {
-  const [validation, setValidation] = React.useState<IState>({
+  id, label, name, initialValue, handleChangeCallback, handleValidationCallback, type, isRequired,
+  minLength, maxLength,
+}: InputComponentProps) => {
+  const [validation, setValidation] = useState<InputComponentState>({
     isValid: true,
     errorMessage: '',
   });
 
-  const [value, setValues] = React.useState(initialValue);
+  const [value, setValues] = useState(initialValue);
+
+  const validate = (val: InputValueTypes) => {
+    let formattedValue = (val && val.toString()) || '';
+    formattedValue = formattedValue.trim();
+
+    let validationResult: boolean | string = '';
+
+    if (isRequired) {
+      validationResult = validateRequired(formattedValue);
+    }
+
+    if (!validationResult && minLength) {
+      validationResult = validateMinLength(formattedValue, minLength);
+    }
+
+    if (!validationResult && maxLength) {
+      validationResult = validateMaxLength(formattedValue, maxLength);
+    }
+
+    if (!validationResult && handleValidationCallback && formattedValue) {
+      validationResult = handleValidationCallback(formattedValue);
+    }
+
+    return validationResult;
+  };
 
   const handleBlur = () => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const val = event.target.value;
+    const validationResult = validate(val);
+
     setValidation({
-      isValid: true,
-      errorMessage: '',
+      isValid: !validationResult,
+      errorMessage: validationResult,
     });
 
     if (handleValidationCallback) {
-      handleValidationCallback(event.target.value);
+      handleValidationCallback(val);
     }
   };
 
@@ -32,7 +63,11 @@ const Input = ({
     }
   };
 
-  const labelMessage = (validation.isValid ? label : validation.errorMessage);
+  let labelMessage = label;
+
+  if (!validation.isValid) {
+    labelMessage = `${label} ${validation.errorMessage}.`;
+  }
 
   return (
     <div className="form-control">
@@ -50,7 +85,7 @@ const Input = ({
         onBlur={handleBlur()}
         onChange={handleChange()}
         type={type || 'text'}
-        value={value || labelMessage}
+        value={value}
       />
     </div>
   );

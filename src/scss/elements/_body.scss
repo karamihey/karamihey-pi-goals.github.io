@@ -1,0 +1,13 @@
+// -----------------------------------------------------------------------------
+//  Elements > Body
+// -----------------------------------------------------------------------------
+
+html,
+body {
+  background: $c-body-bg;
+  // color: $c-body-text;
+  font-family: $default-fonts;
+  font-size: 16px;
+  min-height: 100vh;
+  min-width: $screen-sm-min;
+}
