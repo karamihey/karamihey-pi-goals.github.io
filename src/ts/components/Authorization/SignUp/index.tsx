@@ -1,13 +1,15 @@
 // libraries
-import React, { useEffect, createRef } from 'react';
+import React from 'react';
+// hooks
+import useForm from 'hooks/forms/useForm';
 // types
-import { FormSettingsType } from 'types/forms';
-import { InputComponentType, InputComponentProps } from 'types/forms/input';
+import { FormControlSettings } from 'types/forms';
 // components
 import Input from 'components/shared/Input';
 
-const formSettings: FormSettingsType = [
+const formSettings: FormControlSettings[] = [
   {
+    component: Input,
     id: 'email',
     name: 'email',
     label: 'E-mail',
@@ -15,6 +17,7 @@ const formSettings: FormSettingsType = [
     isRequired: true,
   },
   {
+    component: Input,
     id: 'password',
     name: 'password',
     label: 'Password',
@@ -24,6 +27,7 @@ const formSettings: FormSettingsType = [
     minLength: 8,
   },
   {
+    component: Input,
     id: 'repeat-password',
     name: 'repeat-password',
     label: 'Repeat Password',
@@ -34,37 +38,39 @@ const formSettings: FormSettingsType = [
   },
 ];
 
-const refs: { [key: string]: InputComponentType; } = {};
-
 const SignUp = () => {
-  useEffect(() => {
-    formSettings.forEach((elem: InputComponentProps) => {
-      if (!refs[elem.id]) {
-        refs[elem.id] = createRef<typeof Input>();
-      }
-    });
-  });
+  const {
+    values,
+    /* errors, */
+    handleChange,
+    handleSubmit,
+  } = useForm(formSettings);
 
   return (
     <div className="form-container">
       <div className="title">Sign Up</div>
-      <form noValidate>
-        {(formSettings).map((elem: InputComponentProps) => (
-          <Input
-            key={elem.id}
-            ref={refs[elem.id]}
-            id={elem.id}
-            isRequired={elem.isRequired}
-            label={elem.label}
-            maxLength={elem.maxLength}
-            minLength={elem.minLength}
-            name={elem.name}
-            type={elem.type}
-          />
-        ))}
+      <form noValidate onSubmit={handleSubmit}>
+        {(formSettings).map((elem: FormControlSettings) => {
+          const FormControl = elem.component;
+
+          return (
+            <FormControl
+              key={elem.id}
+              handleChangeCallback={handleChange}
+              id={elem.id}
+              initialValue={values[elem.id]}
+              isRequired={elem.isRequired}
+              label={elem.label}
+              maxLength={elem.maxLength}
+              minLength={elem.minLength}
+              name={elem.name}
+              type={elem.type}
+            />
+          );
+        })}
       </form>
 
-      <button className="button" type="submit">Sign Up</button>
+      <button className="button" onClick={handleSubmit} type="submit">Sign Up</button>
     </div>
   );
 };

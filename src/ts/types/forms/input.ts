@@ -1,28 +1,12 @@
-// libraries
-import { RefObject } from 'react';
 // types
-import { CallbackTypes } from 'types/forms';
-// components
-import Input from 'components/shared/Input';
+import { FormControlProps } from 'types/forms';
 
 type InputTypes = 'text' | 'email' | 'password';
-export type InputValueTypes = string | number;
+export type InputValueTypes = string | number | null;
 
-export type InputComponentType = RefObject<typeof Input>;
-
-export interface InputComponentProps {
-  ref?: InputComponentType;
-  id: string;
-  label: string;
-  name: string;
+export interface InputComponentProps extends FormControlProps {
   initialValue?: InputValueTypes;
   type?: InputTypes;
-  minLength?: number;
-  maxLength?: number;
-  isRequired?: boolean;
-  errorText?: string;
-  handleChangeCallback?: (value: CallbackTypes) => any;
-  handleValidationCallback?: (value: CallbackTypes) => any;
 }
 
 export interface InputComponentState {
