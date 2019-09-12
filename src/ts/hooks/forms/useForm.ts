@@ -1,18 +1,21 @@
+// libraries
 import React, { useState } from 'react';
 // types
 import { FormControlSettings, FormControlValueTypes } from 'types/forms';
-// utils
-import { validateForm } from 'utils/validation';
 
 const useForm = (formSettings: FormControlSettings[] /* callback?: CallbackTypes */) => {
-  const initialState: { [key: string]: FormControlValueTypes } = {};
+  const initialValuesState: { [key: string]: FormControlValueTypes } = {};
+  const initialErrorsState: { [key: string]: boolean } = {};
+  const allErrorsVisibleState: { [key: string]: boolean } = {};
 
   formSettings.forEach(elem => {
-    initialState[elem.id] = '';
+    initialValuesState[elem.id] = '';
+    initialErrorsState[elem.id] = false;
+    allErrorsVisibleState[elem.id] = true;
   });
 
-  const [values, setValues] = useState(initialState);
-  const [errors, setErrors] = useState({});
+  const [values, setValues] = useState(initialValuesState);
+  const [errorsVisibility, setErrorsVisibility] = useState(initialErrorsState);
 
   // const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -29,9 +32,8 @@ const useForm = (formSettings: FormControlSettings[] /* callback?: CallbackTypes
       event.preventDefault();
     }
 
-    const errorsList = validateForm(values, formSettings);
+    setErrorsVisibility(allErrorsVisibleState);
 
-    setErrors(errorsList);
     // setIsSubmitting(true);
   };
 
@@ -40,13 +42,26 @@ const useForm = (formSettings: FormControlSettings[] /* callback?: CallbackTypes
       ...values,
       [id]: value,
     });
+
+    setErrorsVisibility({
+      ...errorsVisibility,
+      [id]: false,
+    });
+  };
+
+  const handleBlur = (id: string) => {
+    setErrorsVisibility({
+      ...errorsVisibility,
+      [id]: true,
+    });
   };
 
   return {
     handleChange,
+    handleBlur,
     handleSubmit,
     values,
-    errors,
+    errorsVisibility,
   };
 };
 

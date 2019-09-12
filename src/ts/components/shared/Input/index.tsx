@@ -1,49 +1,22 @@
 // libraries
-import React, { useState } from 'react';
+import React from 'react';
+// hooks
+import useInput from 'hooks/forms/useInput';
 // types
-import { InputComponentProps, InputComponentState } from 'types/forms/input';
-// utils
-import { validateInput } from 'utils/validation';
+import { InputComponentProps } from 'types/forms/input';
 
-const Input = ({
-  id, label, name, initialValue, handleChangeCallback, handleValidationCallback, type, isRequired,
-  minLength, maxLength,
-}: InputComponentProps) => {
-  const [validation, setValidation] = useState<InputComponentState>({
-    isValid: true,
-    errorMessage: '',
-  });
+const Input = (props: InputComponentProps) => {
+  const {
+    id, label, name, type, shouldErrorsBeVisible,
+  } = props;
 
-  const [value, setValues] = useState(initialValue);
-
-  const handleBlur = () => (event: React.ChangeEvent<HTMLInputElement>) => {
-    const val = event.target.value;
-    const validationRules = {
-      isRequired,
-      minLength,
-      maxLength,
-      handleValidationCallback,
-    };
-
-    const validationResult = validateInput(val, validationRules);
-
-    setValidation({
-      isValid: !validationResult,
-      errorMessage: validationResult,
-    });
-  };
-
-  const handleChange = () => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValues(event.target.value);
-
-    if (handleChangeCallback) {
-      handleChangeCallback(id, event.target.value);
-    }
-  };
+  const {
+    value, validation, handleChange, handleBlur,
+  } = useInput(props);
 
   let labelMessage = label;
 
-  if (!validation.isValid) {
+  if (shouldErrorsBeVisible && !validation.isValid) {
     labelMessage = `${label} ${validation.errorMessage}.`;
   }
 

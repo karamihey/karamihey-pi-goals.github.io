@@ -5,57 +5,28 @@ import useForm from 'hooks/forms/useForm';
 // types
 import { FormControlSettings } from 'types/forms';
 // components
-import Input from 'components/shared/Input';
-
-const formSettings: FormControlSettings[] = [
-  {
-    component: Input,
-    id: 'email',
-    name: 'email',
-    label: 'E-mail',
-    type: 'email',
-    isRequired: true,
-  },
-  {
-    component: Input,
-    id: 'password',
-    name: 'password',
-    label: 'Password',
-    type: 'password',
-    isRequired: true,
-    maxLength: 16,
-    minLength: 8,
-  },
-  {
-    component: Input,
-    id: 'repeat-password',
-    name: 'repeat-password',
-    label: 'Repeat Password',
-    type: 'password',
-    isRequired: true,
-    maxLength: 16,
-    minLength: 8,
-  },
-];
+import { SIGN_UP_FORM_SETTINGS } from 'constants/forms/signUp';
 
 const SignUp = () => {
   const {
     values,
-    /* errors, */
+    errorsVisibility,
     handleChange,
+    handleBlur,
     handleSubmit,
-  } = useForm(formSettings);
+  } = useForm(SIGN_UP_FORM_SETTINGS);
 
   return (
     <div className="form-container">
       <div className="title">Sign Up</div>
       <form noValidate onSubmit={handleSubmit}>
-        {(formSettings).map((elem: FormControlSettings) => {
+        {(SIGN_UP_FORM_SETTINGS).map((elem: FormControlSettings) => {
           const FormControl = elem.component;
 
           return (
             <FormControl
               key={elem.id}
+              handleBlurCallback={handleBlur}
               handleChangeCallback={handleChange}
               id={elem.id}
               initialValue={values[elem.id]}
@@ -64,6 +35,7 @@ const SignUp = () => {
               maxLength={elem.maxLength}
               minLength={elem.minLength}
               name={elem.name}
+              shouldErrorsBeVisible={errorsVisibility[elem.id]}
               type={elem.type}
             />
           );

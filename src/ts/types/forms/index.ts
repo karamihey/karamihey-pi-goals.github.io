@@ -19,7 +19,9 @@ export interface FormControlProps extends FormControlValidationParams {
   label: string;
   name: string;
   errorText?: string;
+  handleBlurCallback?: (id: string) => any;
   handleChangeCallback?: (id: string, value: CallbackTypes) => any;
+  shouldErrorsBeVisible: boolean;
 }
 
 export interface FormControlSettings extends InputComponentProps {
