@@ -1,6 +1,6 @@
 // types
 import { FormSettingsType } from 'types/forms';
-import { PASSWORD_INPUT_SETTINGS } from 'constants/forms';
+import { EMAIL_INPUT_SETTINGS, PASSWORD_INPUT_SETTINGS } from 'constants/forms';
 // components
 import Input from 'components/shared/Input';
 
@@ -13,10 +13,10 @@ const commonSettings = {
 export const SIGN_UP_FORM_SETTINGS: FormSettingsType = [
   {
     ...commonSettings,
+    ...EMAIL_INPUT_SETTINGS,
     id: 'email',
     name: 'email',
     label: 'E-mail',
-    type: 'email',
   },
   {
     ...commonSettings,

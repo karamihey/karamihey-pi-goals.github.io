@@ -1,14 +1,9 @@
 // -----------------------------------------------------------------------------
 //  Objects > Shared > Form Controls
 // -----------------------------------------------------------------------------
-//  01. Base elements
-//  02. Checkbox
-//  03. Layouts
-//  04. Editable inputs
-// -----------------------------------------------------------------------------
 
-//  01. Base elements
 .form-control {
+  font-size: 18px;
   padding-bottom: 30px;
   padding-top: 22px;
   position: relative;
@@ -19,10 +14,9 @@
   }
 
   .form-control-label {
-    font-size: 18px;
-    left: 8px;
+    left: 5px;
     position: absolute;
-    top: 39px;
+    top: 40px;
     transform: translate(0, 0) scale(1);
     transform-origin: left;
     transition: transform $time-form-label cubic-bezier(0, 0, .2, 1) 0ms;
@@ -32,7 +26,7 @@
     }
 
     &.is-shifted {
-      transform: translate(0, -42px) scale(.8);
+      transform: translate(0, -35px) scale(.8);
     }
   }
 
@@ -50,6 +44,7 @@
 
   .form-control-error {
     color: $c-form-error;
+    margin-top: 5px;
   }
 
   .form-field {

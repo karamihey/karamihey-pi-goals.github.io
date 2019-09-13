@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 // types
 import { FormControlSettings, FormControlValueTypes } from 'types/forms';
 
-const useForm = (formSettings: FormControlSettings[] /* callback?: CallbackTypes */) => {
+const useForm = (formSettings: FormControlSettings[] /* callback?: CallbackParamsTypes */) => {
   const initialValuesState: { [key: string]: FormControlValueTypes } = {};
   const initialErrorsState: { [key: string]: boolean } = {};
   const allErrorsVisibleState: { [key: string]: boolean } = {};
 
   formSettings.forEach(elem => {
-    initialValuesState[elem.id] = '';
+    initialValuesState[elem.id] = null;
     initialErrorsState[elem.id] = false;
     allErrorsVisibleState[elem.id] = true;
   });

@@ -11,33 +11,37 @@ const Input = (props: InputComponentProps) => {
   } = props;
 
   const {
-    value, validation, handleChange, handleBlur,
+    value, validation, isEditing, handleChange, handleFocus, handleBlur,
   } = useInput(props);
 
-  let labelMessage = label;
-
-  if (shouldErrorsBeVisible && !validation.isValid) {
-    labelMessage = `${label} ${validation.errorMessage}.`;
-  }
+  const formattedValue = (value && value.toString()) || '';
+  const isFieldFilled = formattedValue.trim().length;
 
   return (
     <div className="form-control">
       <label
-        className="form-control-label"
+        className={`form-control-label ${isEditing || isFieldFilled ? 'is-shifted' : ''}`}
         htmlFor={id}
       >
-        {labelMessage}
+        {label}
       </label>
 
       <input
         className="form-field"
         id={id}
         name={name}
-        onBlur={handleBlur()}
-        onChange={handleChange()}
+        onBlur={handleBlur}
+        onChange={handleChange}
+        onFocus={handleFocus}
         type={type || 'text'}
         value={value || ''}
       />
+
+      {(shouldErrorsBeVisible && !validation.isValid && (
+        <div className="form-control-error">
+          {`${label} ${validation.errorMessage}.`}
+        </div>
+      ))}
     </div>
   );
 };

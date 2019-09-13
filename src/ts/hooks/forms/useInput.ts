@@ -13,7 +13,9 @@ const useInput = ({
 }: InputComponentProps) => {
   let timeout: ReturnType<typeof setTimeout> | null = null;
 
-  const [value, setValues] = useState<InputValueTypes | undefined>(initialValue);
+  const [value, setValue] = useState<InputValueTypes | undefined>(initialValue);
+  const [isValueChanged, setValueChangeStatus] = useState(false);
+  const [isEditing, setEditingStatus] = useState(false);
   const [validation, setValidation] = useState<InputComponentState>({
     isValid: true,
     errorMessage: '',
@@ -53,13 +55,14 @@ const useInput = ({
     });
   };
 
-  const handleChange = () => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (timeout) {
       clearTimeout(timeout);
     }
 
     const val = event.target.value;
-    setValues(val);
+    setValue(val);
+    setValueChangeStatus(true);
 
     if (handleChangeCallback) {
       handleChangeCallback(id, val);
@@ -70,7 +73,12 @@ const useInput = ({
     }, USER_TYPING_DELAY);
   };
 
-  const handleBlur = () => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFocus = () => {
+    setEditingStatus(true);
+  };
+
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    setEditingStatus(false);
     updateValidationStatus(event.target.value);
 
     if (handleBlurCallback) {
@@ -79,20 +87,22 @@ const useInput = ({
   };
 
   useEffect(() => {
-    if (initialValue && value && initialValue === value) {
+    if (isValueChanged || (initialValue && value && initialValue === value)) {
       return;
     }
 
-    console.error(initialValue, value, initialValue === value);
     const val = initialValue || null;
 
+    setValue(val);
     updateValidationStatus(val);
-  }, [initialValue]); // Only re-run the effect if count changes
+  }, [initialValue]);
 
   return {
     value,
     validation,
+    isEditing,
     handleChange,
+    handleFocus,
     handleBlur,
   };
 };

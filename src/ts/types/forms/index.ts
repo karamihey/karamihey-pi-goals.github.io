@@ -3,7 +3,7 @@ import { InputComponentProps, InputValueTypes } from 'types/forms/input';
 // components
 import Input from 'components/shared/Input';
 
-export type CallbackTypes = string | number | null;
+export type CallbackParamsTypes = string | number | null;
 
 export type FormControlValueTypes = InputValueTypes;
 
@@ -11,7 +11,7 @@ export interface FormControlValidationParams {
   isRequired?: boolean;
   minLength?: number;
   maxLength?: number;
-  handleValidationCallback?: (value: CallbackTypes) => any;
+  handleValidationCallback?: (value: CallbackParamsTypes) => any;
 }
 
 export interface FormControlProps extends FormControlValidationParams {
@@ -20,7 +20,7 @@ export interface FormControlProps extends FormControlValidationParams {
   name: string;
   errorText?: string;
   handleBlurCallback?: (id: string) => any;
-  handleChangeCallback?: (id: string, value: CallbackTypes) => any;
+  handleChangeCallback?: (id: string, value: CallbackParamsTypes) => any;
   shouldErrorsBeVisible: boolean;
 }
 
