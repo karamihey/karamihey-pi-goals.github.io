@@ -1,11 +1,11 @@
 // libraries
 import React from 'react';
-// hooks
-import useForm from 'hooks/forms/useForm';
 // types
 import { FormControlSettings } from 'types/forms';
-// components
+// constants
 import { SIGN_UP_FORM_SETTINGS } from 'constants/forms/signUp';
+// hooks
+import useForm from 'hooks/forms/useForm';
 
 const SignUp = () => {
   const {

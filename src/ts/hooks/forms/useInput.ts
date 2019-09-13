@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 // types
 import { InputComponentProps, InputComponentState, InputValueTypes } from 'types/forms/input';
+// constants
+import { USER_TYPING_DELAY } from 'constants/forms';
 // utils
 import { validateMaxLength, validateMinLength, validateRequired } from 'utils/validation';
 
@@ -9,6 +11,8 @@ const useInput = ({
   id, initialValue, isRequired, minLength, maxLength, handleValidationCallback,
   handleChangeCallback, handleBlurCallback,
 }: InputComponentProps) => {
+  let timeout: ReturnType<typeof setTimeout> | null = null;
+
   const [value, setValues] = useState<InputValueTypes | undefined>(initialValue);
   const [validation, setValidation] = useState<InputComponentState>({
     isValid: true,
@@ -50,14 +54,20 @@ const useInput = ({
   };
 
   const handleChange = () => (event: React.ChangeEvent<HTMLInputElement>) => {
-    const val = event.target.value;
+    if (timeout) {
+      clearTimeout(timeout);
+    }
 
+    const val = event.target.value;
     setValues(val);
-    updateValidationStatus(val);
 
     if (handleChangeCallback) {
-      handleChangeCallback(id, event.target.value);
+      handleChangeCallback(id, val);
     }
+
+    timeout = setTimeout(() => {
+      updateValidationStatus(val);
+    }, USER_TYPING_DELAY);
   };
 
   const handleBlur = () => (event: React.ChangeEvent<HTMLInputElement>) => {

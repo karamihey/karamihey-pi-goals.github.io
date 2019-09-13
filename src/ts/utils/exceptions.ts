@@ -1,3 +1,4 @@
+// types
 import { ResponseBody, ResponseBodyMessage } from 'types/requests';
 
 export class RequestError extends Error {

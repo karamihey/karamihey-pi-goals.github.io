@@ -1,9 +1,9 @@
 // libraries
 import React from 'react';
-// hooks
-import useInput from 'hooks/forms/useInput';
 // types
 import { InputComponentProps } from 'types/forms/input';
+// hooks
+import useInput from 'hooks/forms/useInput';
 
 const Input = (props: InputComponentProps) => {
   const {
