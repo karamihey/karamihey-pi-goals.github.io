@@ -1,12 +1,12 @@
-const emailRegExp = /^\w+([.+-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/;
-const passwordRegExp = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*[A-Z])(?=.*[.!@#$%^&*()_+=-]).+$/;
+// constants
+import { VALIDATION_REGEXPS, VALIDATION_ERRORS } from 'constants/validation';
 
 export const validateRequired = (value: string) => {
   if (value && value.length !== 0) {
     return false;
   }
 
-  return 'should not be blank';
+  return VALIDATION_ERRORS.required;
 };
 
 export const validateMinLength = (value: string, minLength: number) => {
@@ -14,7 +14,7 @@ export const validateMinLength = (value: string, minLength: number) => {
     return false;
   }
 
-  return `must be at least ${minLength} characters long`;
+  return `${VALIDATION_ERRORS.minLength} ${minLength} ${VALIDATION_ERRORS.charactersLong}`;
 };
 
 export const validateMaxLength = (value: string, maxLength: number) => {
@@ -22,21 +22,21 @@ export const validateMaxLength = (value: string, maxLength: number) => {
     return false;
   }
 
-  return `must be no more than ${maxLength} characters long`;
+  return `${VALIDATION_ERRORS.maxLength} ${maxLength} ${VALIDATION_ERRORS.charactersLong}`;
 };
 
 export const validateEmail = (email: string) => {
-  if (emailRegExp.test(email)) {
+  if (VALIDATION_REGEXPS.email.test(email)) {
     return false;
   }
 
-  return 'is invalid';
+  return VALIDATION_ERRORS.email;
 };
 
 export const validatePassword = (password: string) => {
-  if (passwordRegExp.test(password)) {
+  if (VALIDATION_REGEXPS.password.test(password)) {
     return false;
   }
 
-  return 'must contain digits, lowercase letters, uppercase letters and a special character(s)';
+  return VALIDATION_ERRORS.password;
 };
