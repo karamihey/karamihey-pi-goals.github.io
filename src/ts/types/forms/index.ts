@@ -7,11 +7,14 @@ export type CallbackParamsTypes = string | number | null;
 
 export type FormControlValueTypes = InputValueTypes;
 
+export type FormControlValidationResultTypes = boolean | string;
+
 export interface FormControlValidationParams {
   isRequired?: boolean;
   minLength?: number;
   maxLength?: number;
   handleValidationCallback?: (value: CallbackParamsTypes) => any;
+  handleValidationErrorsCallback: (id: string, value: FormControlValidationResultTypes) => any;
 }
 
 export interface FormControlProps extends FormControlValidationParams {

@@ -2,18 +2,14 @@
 import React, { useState, useEffect } from 'react';
 // types
 import { InputComponentProps, InputComponentState, InputValueTypes } from 'types/forms/input';
-// constants
-import { USER_TYPING_DELAY } from 'constants/forms';
 // utils
 import { validateMaxLength, validateMinLength, validateRequired } from 'utils/validation';
 
 const useInput = ({
   id, initialValue, isRequired, minLength, maxLength, handleValidationCallback,
-  handleChangeCallback, handleBlurCallback,
+  handleChangeCallback, handleBlurCallback, handleValidationErrorsCallback,
 }: InputComponentProps) => {
-  let timeout: ReturnType<typeof setTimeout> | null = null;
-
-  const [value, setValue] = useState<InputValueTypes | undefined>(initialValue);
+  const [value, setValue] = useState<InputValueTypes>(initialValue);
   const [isValueChanged, setValueChangeStatus] = useState(false);
   const [isEditing, setEditingStatus] = useState(false);
   const [validation, setValidation] = useState<InputComponentState>({
@@ -21,8 +17,8 @@ const useInput = ({
     errorMessage: '',
   });
 
-  const validate = (val: InputValueTypes) => {
-    let formattedValue = (val && val.toString()) || '';
+  const validate = () => {
+    let formattedValue = (value && value.toString()) || '';
     formattedValue = formattedValue.trim();
 
     let validationResult: boolean | string = '';
@@ -43,23 +39,23 @@ const useInput = ({
       validationResult = handleValidationCallback(formattedValue);
     }
 
+    handleValidationErrorsCallback(id, validationResult);
+
     return validationResult;
   };
 
-  const updateValidationStatus = (val: InputValueTypes) => {
-    const validationResult = validate(val);
+  const updateValidationStatus = () => {
+    const validationResult = validate();
 
     setValidation({
       isValid: !validationResult,
       errorMessage: validationResult,
     });
+
+    handleValidationErrorsCallback(id, validationResult);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-
     const val = event.target.value;
     setValue(val);
     setValueChangeStatus(true);
@@ -68,18 +64,16 @@ const useInput = ({
       handleChangeCallback(id, val);
     }
 
-    timeout = setTimeout(() => {
-      updateValidationStatus(val);
-    }, USER_TYPING_DELAY);
+    updateValidationStatus();
   };
 
   const handleFocus = () => {
     setEditingStatus(true);
   };
 
-  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+  const handleBlur = () => {
     setEditingStatus(false);
-    updateValidationStatus(event.target.value);
+    updateValidationStatus();
 
     if (handleBlurCallback) {
       handleBlurCallback(id);
@@ -91,10 +85,8 @@ const useInput = ({
       return;
     }
 
-    const val = initialValue || null;
-
-    setValue(val);
-    updateValidationStatus(val);
+    setValue(initialValue || null);
+    updateValidationStatus();
   }, [initialValue]);
 
   return {

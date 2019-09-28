@@ -8,6 +8,7 @@ const commonSettings = {
   component: Input,
   isRequired: true,
   shouldErrorsBeVisible: false,
+  handleValidationErrorsCallback: () => {},
 };
 
 export const SIGN_UP_FORM_SETTINGS: FormSettingsType = [
@@ -28,8 +29,8 @@ export const SIGN_UP_FORM_SETTINGS: FormSettingsType = [
   {
     ...commonSettings,
     ...PASSWORD_INPUT_SETTINGS,
-    id: 'repeat-password',
-    name: 'repeat-password',
-    label: 'Repeat Password',
+    id: 'confirmPassword',
+    name: 'confirm-password',
+    label: 'Confirm Password',
   },
 ];

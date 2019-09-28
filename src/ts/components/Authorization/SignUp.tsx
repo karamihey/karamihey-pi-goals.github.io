@@ -1,49 +1,64 @@
 // libraries
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // types
 import { FormControlSettings } from 'types/forms';
 // constants
+import { VALIDATION_ERRORS } from 'constants/validation';
 import { SIGN_UP_FORM_SETTINGS } from 'constants/forms/signUp';
 // hooks
 import useForm from 'hooks/forms/useForm';
 // api
-import { getUser } from 'api/user';
+import { createUser } from 'api/user';
+// types
+import { NewUser } from 'types/user';
 
 const SignUp = () => {
-  const [user, setUser] = useState<{[key: string]: any}>({});
-  const [isUserInfoLoaded, setLoadingStatus] = useState(false);
-
-  const getUserData = () => {
-    getUser(1)
-      .then(data => {
-        setUser(data);
-        setLoadingStatus(false);
-      })
-      .catch(() => {});
-  };
-
-  useEffect(() => {
-    if (isUserInfoLoaded) {
-      return;
-    }
-
-    getUserData();
-  }, [isUserInfoLoaded]);
+  const [isSubmitted, setSubmittedStatus] = useState(false);
 
   const {
     values,
     errorsVisibility,
     handleChange,
     handleBlur,
+    handleValidationErrors,
     handleSubmit,
-  } = useForm(SIGN_UP_FORM_SETTINGS);
+    isSubmitting,
+  } = useForm(SIGN_UP_FORM_SETTINGS, isSubmitted);
+
+  const signUpUser = () => {
+    const { email, password } = values;
+
+    const userData: NewUser = {
+      email: (email && email.toString()) || '',
+      password: (password && password.toString()) || '',
+    };
+
+    createUser(userData)
+      .then(data => {
+        console.error('data', data);
+      })
+      .catch(err => {
+        console.error('err', err);
+      })
+      .finally(() => {
+        setSubmittedStatus(true);
+      });
+  };
+
+  useEffect(() => {
+    if (!isSubmitting) {
+      return;
+    }
+
+    signUpUser();
+  }, [isSubmitting]);
 
   const validateConfirmPassword = () => {
-    if (values.password === values.repeatPassword) {
+    if (values.password === values.confirmPassword) {
       return false;
     }
 
-    return 'do not match';
+    return VALIDATION_ERRORS.confirmPassword;
   };
 
   return (
@@ -55,7 +70,7 @@ const SignUp = () => {
 
           let { handleValidationCallback } = field;
 
-          if (field.id === 'repeat-password') {
+          if (field.id === 'confirmPassword') {
             handleValidationCallback = validateConfirmPassword;
           }
 
@@ -65,8 +80,9 @@ const SignUp = () => {
               handleBlurCallback={handleBlur}
               handleChangeCallback={handleChange}
               handleValidationCallback={handleValidationCallback}
+              handleValidationErrorsCallback={handleValidationErrors}
               id={field.id}
-              initialValue={values[field.id] || user.name}
+              initialValue={values[field.id]}
               isRequired={field.isRequired}
               label={field.label}
               maxLength={field.maxLength}

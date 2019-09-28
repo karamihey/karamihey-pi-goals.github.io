@@ -1,40 +1,59 @@
 // libraries
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // types
-import { FormControlSettings, FormControlValueTypes } from 'types/forms';
+import { FormControlSettings, FormControlValueTypes, FormControlValidationResultTypes } from 'types/forms';
 
-const useForm = (formSettings: FormControlSettings[] /* callback?: CallbackParamsTypes */) => {
+const useForm = (formSettings: FormControlSettings[], isSubmitted: boolean) => {
   const initialValuesState: { [key: string]: FormControlValueTypes } = {};
   const initialErrorsState: { [key: string]: boolean } = {};
+  const initialValidationState: { [key: string]: FormControlValidationResultTypes } = {};
   const allErrorsVisibleState: { [key: string]: boolean } = {};
 
   formSettings.forEach(elem => {
     initialValuesState[elem.id] = null;
     initialErrorsState[elem.id] = false;
     allErrorsVisibleState[elem.id] = true;
+    initialValidationState[elem.id] = true;
   });
 
   const [values, setValues] = useState(initialValuesState);
+  const [errors, setErrors] = useState(initialValidationState);
   const [errorsVisibility, setErrorsVisibility] = useState(initialErrorsState);
+  const [isSubmitting, setSubmittingStatus] = useState(false);
 
-  // const [isSubmitting, setIsSubmitting] = useState(false);
-
-  /* useEffect(() => {
-    if (Object.keys(errors).length === 0 && isSubmitting) {
-      if (callback) {
-        // callback();
-      }
+  useEffect(() => {
+    if (!isSubmitted) {
+      return;
     }
-  }, [errors]); */
+
+    setSubmittingStatus(false);
+    console.error('...submitting finished!');
+  }, [isSubmitted]);
+
+  const validate = () => {
+    let result: FormControlValidationResultTypes = true;
+
+    Object.keys(errors).forEach((key: string) => {
+      result = !errors[key] && result;
+    });
+
+    setErrorsVisibility(allErrorsVisibleState);
+
+    return result;
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLButtonElement | HTMLFormElement>) => {
     if (event) {
       event.preventDefault();
     }
 
-    setErrorsVisibility(allErrorsVisibleState);
+    if (isSubmitting || !validate()) {
+      return;
+    }
 
-    // setIsSubmitting(true);
+    setSubmittingStatus(true);
+
+    console.error('...submitting');
   };
 
   const handleChange = (id: string, value: FormControlValueTypes) => {
@@ -49,6 +68,13 @@ const useForm = (formSettings: FormControlSettings[] /* callback?: CallbackParam
     });
   };
 
+  const handleValidationErrors = (id: string, value: FormControlValidationResultTypes) => {
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      [id]: value,
+    }));
+  };
+
   const handleBlur = (id: string) => {
     setErrorsVisibility({
       ...errorsVisibility,
@@ -60,8 +86,10 @@ const useForm = (formSettings: FormControlSettings[] /* callback?: CallbackParam
     handleChange,
     handleBlur,
     handleSubmit,
+    handleValidationErrors,
     values,
     errorsVisibility,
+    isSubmitting,
   };
 };
 

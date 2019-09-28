@@ -10,4 +10,5 @@ export const VALIDATION_ERRORS = {
   charactersLong: 'characters long',
   email: 'is invalid',
   password: 'must contain digits, lowercase letters, uppercase letters and a special character(s)',
+  confirmPassword: 'do not match',
 };

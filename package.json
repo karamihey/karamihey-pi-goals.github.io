@@ -85,7 +85,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "startApi": "json-server -p 4000 --watch fake-data.json",
+    "startApi": "json-server -p 4000 --watch fakeData/db.json --routes fakeData/routes.json",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom --coverage --watchAll=false",
     "eslint": "eslint ./ --ext .tsx"
