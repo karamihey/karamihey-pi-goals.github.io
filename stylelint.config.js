@@ -24,7 +24,7 @@ module.exports = {
     'scss/operator-no-newline-before': true,
     'scss/operator-no-newline-after': true,
     'scss/media-feature-value-dollar-variable': 'always',
-    'scss/dollar-variable-pattern': '(^(font|screen|c|z|time|default)-)|(-width$)',
+    'scss/dollar-variable-pattern': '(^(font|screen|c|z|time|default|rt)-)|(-width$)',
 
     'order/order': [
       {

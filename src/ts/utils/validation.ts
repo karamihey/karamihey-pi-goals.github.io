@@ -1,5 +1,10 @@
 // constants
-import { VALIDATION_REGEXPS, VALIDATION_ERRORS } from 'constants/validation';
+import { VALIDATION_ERRORS } from 'constants/errors';
+
+const regExps = {
+  email: /^\w+([.+-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/,
+  password: /^(?=.*?[a-z])(?=.*?[0-9])(?=.*[A-Z])(?=.*[.!@#$%^&*()_+=-]).+$/,
+};
 
 export const validateRequired = (value: string) => {
   if (value && value.length !== 0) {
@@ -26,7 +31,7 @@ export const validateMaxLength = (value: string, maxLength: number) => {
 };
 
 export const validateEmail = (email: string) => {
-  if (VALIDATION_REGEXPS.email.test(email)) {
+  if (regExps.email.test(email)) {
     return false;
   }
 
@@ -34,7 +39,7 @@ export const validateEmail = (email: string) => {
 };
 
 export const validatePassword = (password: string) => {
-  if (VALIDATION_REGEXPS.password.test(password)) {
+  if (regExps.password.test(password)) {
     return false;
   }
 

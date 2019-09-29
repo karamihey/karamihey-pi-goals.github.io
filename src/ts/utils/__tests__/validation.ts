@@ -1,5 +1,5 @@
 // constants
-import { VALIDATION_ERRORS } from 'constants/validation';
+import { VALIDATION_ERRORS } from 'constants/errors';
 // utils
 import {
   validateRequired, validateMinLength, validateMaxLength, validateEmail, validatePassword,

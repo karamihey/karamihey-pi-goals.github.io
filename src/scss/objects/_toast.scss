@@ -1,0 +1,16 @@
+// -----------------------------------------------------------------------------
+//  Objects > Toast
+// -----------------------------------------------------------------------------
+
+$rt-color-info: $c-toast-info;
+$rt-color-success: $c-toast-success;
+$rt-color-warning: $c-toast-warning;
+$rt-color-error: $c-toast-error;
+
+$rt-font-family: $default-fonts;
+
+@import '~react-toastify/scss/main';
+
+.Toastify__toast {
+  border-radius: 5px;
+}

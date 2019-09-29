@@ -1,7 +1,4 @@
-export const VALIDATION_REGEXPS = {
-  email: /^\w+([.+-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/,
-  password: /^(?=.*?[a-z])(?=.*?[0-9])(?=.*[A-Z])(?=.*[.!@#$%^&*()_+=-]).+$/,
-};
+export const DEFAULT_ERROR = 'Something went wrong. Please try again later.';
 
 export const VALIDATION_ERRORS = {
   required: 'should not be blank',

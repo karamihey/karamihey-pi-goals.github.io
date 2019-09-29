@@ -1,8 +1,8 @@
 // libraries
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 // constants
-import routes from 'constants/routes';
+import ROUTES from 'constants/routes';
 // components
 import SignIn from 'components/Authorization/SignIn';
 import SignUp from 'components/Authorization/SignUp';
@@ -10,8 +10,10 @@ import SignUp from 'components/Authorization/SignUp';
 const Authorization = () => (
   <div className="authorization-pages">
     <Switch>
-      <Route component={SignIn} exact path={routes.signIn} />
-      <Route component={SignUp} exact path={routes.signUp} />
+      <Route component={SignIn} exact path={ROUTES.signIn} />
+      <Route component={SignUp} exact path={ROUTES.signUp} />
+
+      <Redirect to={ROUTES.signIn} />
     </Switch>
   </div>
 );

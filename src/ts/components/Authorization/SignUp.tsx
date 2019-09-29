@@ -2,15 +2,16 @@
 import React, { useState, useEffect } from 'react';
 // types
 import { FormControlSettings } from 'types/forms';
+import { NewUser } from 'types/user';
 // constants
-import { VALIDATION_ERRORS } from 'constants/validation';
+import { DEFAULT_ERROR, VALIDATION_ERRORS } from 'constants/errors';
 import { SIGN_UP_FORM_SETTINGS } from 'constants/forms/signUp';
 // hooks
 import useForm from 'hooks/forms/useForm';
 // api
 import { createUser } from 'api/user';
-// types
-import { NewUser } from 'types/user';
+// utils
+import { addErrorToast } from 'utils/toast';
 
 const SignUp = () => {
   const [isSubmitted, setSubmittedStatus] = useState(false);
@@ -37,8 +38,8 @@ const SignUp = () => {
       .then(data => {
         console.error('data', data);
       })
-      .catch(err => {
-        console.error('err', err);
+      .catch(() => {
+        addErrorToast(DEFAULT_ERROR);
       })
       .finally(() => {
         setSubmittedStatus(true);

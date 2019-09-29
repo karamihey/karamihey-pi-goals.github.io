@@ -16,6 +16,11 @@ $c-primary-button-bg-active: linear-gradient(45deg, rgba($c-primary, .5), rgba($
 $c-primary-button-shadow: rgba($c-pink-1, .3);
 $c-primary-button-text: $c-white;
 
+$c-toast-info: $c-yellow;
+$c-toast-success: $c-green;
+$c-toast-warning: $c-orange;
+$c-toast-error: $c-red;
+
 $c-form-error: $c-red;
 $c-form-control-input-bg: transparent;
 $c-form-control-input-border: rgba($c-black, .42);
