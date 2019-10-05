@@ -2,16 +2,14 @@
 import React, { useState, useEffect } from 'react';
 // types
 import { FormControlSettings } from 'types/forms';
-import { NewUser } from 'types/user';
 // constants
-import { DEFAULT_ERROR, VALIDATION_ERRORS } from 'constants/errors';
+import { VALIDATION_ERRORS } from 'constants/errors';
 import { SIGN_UP_FORM_SETTINGS } from 'constants/forms/signUp';
 // hooks
 import useForm from 'hooks/forms/useForm';
-// api
-import { createUser } from 'api/user';
+import useAuth from 'hooks/authorization';
 // utils
-import { addErrorToast } from 'utils/toast';
+import { convertToString } from 'utils/converters';
 
 const SignUp = () => {
   const [isSubmitted, setSubmittedStatus] = useState(false);
@@ -26,22 +24,16 @@ const SignUp = () => {
     isSubmitting,
   } = useForm(SIGN_UP_FORM_SETTINGS, isSubmitted);
 
-  const signUpUser = () => {
-    const { email, password } = values;
+  const { signUp } = useAuth();
 
-    const userData: NewUser = {
-      email: (email && email.toString()) || '',
-      password: (password && password.toString()) || '',
+  const signUpUser = () => {
+    const userData = {
+      email: convertToString(values.email),
+      password: convertToString(values.password),
     };
 
-    createUser(userData)
-      .then(data => {
-        console.error('data', data);
-      })
-      .catch(() => {
-        addErrorToast(DEFAULT_ERROR);
-      })
-      .finally(() => {
+    signUp(userData)
+      .then(() => {
         setSubmittedStatus(true);
       });
   };
@@ -54,7 +46,7 @@ const SignUp = () => {
     signUpUser();
   }, [isSubmitting]);
 
-  const validateConfirmPassword = () => {
+  const validatePasswordConfirm = () => {
     if (values.password === values.confirmPassword) {
       return false;
     }
@@ -72,7 +64,7 @@ const SignUp = () => {
           let { handleValidationCallback } = field;
 
           if (field.id === 'confirmPassword') {
-            handleValidationCallback = validateConfirmPassword;
+            handleValidationCallback = validatePasswordConfirm;
           }
 
           return (
