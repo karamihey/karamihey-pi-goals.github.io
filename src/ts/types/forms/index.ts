@@ -1,34 +1,33 @@
 // types
-import { InputComponentProps, InputValueTypes } from 'types/forms/input';
-// components
-import Input from 'components/shared/Input';
+import { InputValueTypes } from 'types/forms/input';
 
-export type CallbackParamsTypes = string | number | null;
+type CallbackParamsValueTypes = string;
 
 export type FormControlValueTypes = InputValueTypes;
 
 export type FormControlValidationResultTypes = boolean | string;
 
+export type FormValuesType = { [key: string]: FormControlValueTypes };
+
+export type FormErrorsType = { [key: string]: FormControlValidationResultTypes };
+
 export interface FormControlValidationParams {
   isRequired?: boolean;
   minLength?: number;
   maxLength?: number;
-  handleValidationCallback?: (value: CallbackParamsTypes) => any;
-  handleValidationErrorsCallback: (id: string, value: FormControlValidationResultTypes) => any;
+  handleValidationCallback?: (value: CallbackParamsValueTypes) => any;
 }
 
 export interface FormControlProps extends FormControlValidationParams {
   id: string;
   label: string;
   name: string;
-  errorText?: string;
+  errorText?: FormControlValidationResultTypes;
+  handleValidation: (id: string) => any;
   handleBlurCallback?: (id: string) => any;
-  handleChangeCallback?: (id: string, value: CallbackParamsTypes) => any;
-  shouldErrorsBeVisible: boolean;
+  handleChangeCallback?: (id: string, value: CallbackParamsValueTypes) => any;
 }
 
-export interface FormControlSettings extends InputComponentProps {
-  component: typeof Input;
-}
+export type FormControlSettingsType = FormControlValidationParams;
 
-export type FormSettingsType = FormControlSettings[];
+export type FormSettingsType = { [key: string]: FormControlSettingsType };

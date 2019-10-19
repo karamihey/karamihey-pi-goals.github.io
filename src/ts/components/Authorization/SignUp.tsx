@@ -1,13 +1,12 @@
 // libraries
 import React, { useState, useEffect } from 'react';
-// types
-import { FormControlSettings } from 'types/forms';
 // constants
-import { VALIDATION_ERRORS } from 'constants/errors';
-import { SIGN_UP_FORM_SETTINGS } from 'constants/forms/signUp';
+import FORM_VALIDATION_SETTINGS from 'constants/forms/signUp';
 // hooks
-import useForm from 'hooks/forms/useForm';
+import useForm from 'hooks/forms';
 import useAuth from 'hooks/authorization';
+// components
+import Input from 'components/shared/Input';
 // utils
 import { convertToString } from 'utils/converters';
 
@@ -16,17 +15,17 @@ const SignUp = () => {
 
   const {
     values,
-    errorsVisibility,
+    errors,
     handleChange,
-    handleBlur,
-    handleValidationErrors,
     handleSubmit,
+    handleValidation,
     isSubmitting,
-  } = useForm(SIGN_UP_FORM_SETTINGS, isSubmitted);
+  } = useForm(FORM_VALIDATION_SETTINGS, isSubmitted);
 
   const { signUp } = useAuth();
 
   const signUpUser = () => {
+    // TODO: Check convert type is still needed
     const userData = {
       email: convertToString(values.email),
       password: convertToString(values.password),
@@ -46,46 +45,55 @@ const SignUp = () => {
     signUpUser();
   }, [isSubmitting]);
 
-  const validatePasswordConfirm = () => {
-    if (values.password === values.confirmPassword) {
-      return false;
-    }
-
-    return VALIDATION_ERRORS.confirmPassword;
-  };
+  const { email, password, confirmPassword } = FORM_VALIDATION_SETTINGS;
 
   return (
     <div className="form-container">
       <div className="title">Sign Up</div>
       <form noValidate onSubmit={handleSubmit}>
-        {(SIGN_UP_FORM_SETTINGS).map((field: FormControlSettings) => {
-          const FormControl = field.component;
+        <Input
+          errorText={errors.email}
+          handleChangeCallback={handleChange}
+          handleValidation={handleValidation}
+          handleValidationCallback={email.handleValidationCallback}
+          id="email"
+          initialValue={values.email}
+          isRequired={email.isRequired}
+          label="E-mail"
+          name="email"
+          type="email"
+        />
 
-          let { handleValidationCallback } = field;
+        <Input
+          errorText={errors.password}
+          handleChangeCallback={handleChange}
+          handleValidation={handleValidation}
+          handleValidationCallback={password.handleValidationCallback}
+          id="password"
+          initialValue={values.password}
+          isRequired={password.isRequired}
+          label="Password"
+          maxLength={password.maxLength}
+          minLength={password.minLength}
+          name="password"
+          type="password"
+        />
 
-          if (field.id === 'confirmPassword') {
-            handleValidationCallback = validatePasswordConfirm;
-          }
-
-          return (
-            <FormControl
-              key={field.id}
-              handleBlurCallback={handleBlur}
-              handleChangeCallback={handleChange}
-              handleValidationCallback={handleValidationCallback}
-              handleValidationErrorsCallback={handleValidationErrors}
-              id={field.id}
-              initialValue={values[field.id]}
-              isRequired={field.isRequired}
-              label={field.label}
-              maxLength={field.maxLength}
-              minLength={field.minLength}
-              name={field.name}
-              shouldErrorsBeVisible={errorsVisibility[field.id]}
-              type={field.type}
-            />
-          );
-        })}
+        <Input
+          errorText={errors.confirmPassword}
+          handleChangeCallback={handleChange}
+          handleValidation={handleValidation}
+          // handleValidationCallback={() =>
+          // confirmPassword.handleValidationCallback(values.password, values.confirmPassword)}
+          id="confirm-password"
+          initialValue={values.confirmPassword}
+          isRequired={confirmPassword.isRequired}
+          label="Confirm Password"
+          maxLength={confirmPassword.maxLength}
+          minLength={confirmPassword.minLength}
+          name="confirm-password"
+          type="password"
+        />
       </form>
 
       <button className="button" onClick={handleSubmit} type="submit">Sign Up</button>

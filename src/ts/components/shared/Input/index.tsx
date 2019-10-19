@@ -3,24 +3,23 @@ import React from 'react';
 // types
 import { InputComponentProps } from 'types/forms/input';
 // hooks
-import useInput from 'hooks/forms/useInput';
+import useInput from 'hooks/forms/input';
 
 const Input = (props: InputComponentProps) => {
   const {
-    id, label, name, type, shouldErrorsBeVisible,
+    id, label, name, type, errorText,
   } = props;
 
   const {
-    value, validation, isEditing, handleChange, handleFocus, handleBlur,
+    value, isFieldFilled, isEditing, handleChange, handleFocus, handleBlur,
   } = useInput(props);
 
-  const formattedValue = (value && value.toString()) || '';
-  const isFieldFilled = formattedValue.trim().length;
+  const labelClassName = `${(isEditing || isFieldFilled) ? 'is-shifted' : ''}`;
 
   return (
     <div className="form-control">
       <label
-        className={`form-control-label ${isEditing || isFieldFilled ? 'is-shifted' : ''}`}
+        className={`form-control-label ${labelClassName}`}
         htmlFor={id}
       >
         {label}
@@ -37,9 +36,9 @@ const Input = (props: InputComponentProps) => {
         value={value || ''}
       />
 
-      {(shouldErrorsBeVisible && !validation.isValid && (
+      {(errorText && (
         <div className="form-control-error">
-          {`${label} ${validation.errorMessage}.`}
+          {errorText}
         </div>
       ))}
     </div>

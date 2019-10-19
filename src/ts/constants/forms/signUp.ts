@@ -1,36 +1,23 @@
-// types
-import { FormSettingsType } from 'types/forms';
-import { EMAIL_INPUT_SETTINGS, PASSWORD_INPUT_SETTINGS } from 'constants/forms';
-// components
-import Input from 'components/shared/Input';
+// constants
+import { FIELDS_MAX_LENGTH, FIELDS_MIN_LENGTH } from 'constants/forms';
+// utils
+import { validateEmail, validatePassword, validatePasswordConfirm } from 'utils/validation';
 
-const commonSettings = {
-  component: Input,
-  isRequired: true,
-  shouldErrorsBeVisible: false,
-  handleValidationErrorsCallback: () => {},
+export default {
+  email: {
+    isRequired: true,
+    handleValidationCallback: validateEmail,
+  },
+  password: {
+    isRequired: true,
+    maxLength: FIELDS_MAX_LENGTH.password,
+    minLength: FIELDS_MIN_LENGTH.password,
+    handleValidationCallback: validatePassword,
+  },
+  confirmPassword: {
+    isRequired: true,
+    maxLength: FIELDS_MAX_LENGTH.password,
+    minLength: FIELDS_MIN_LENGTH.password,
+    handleValidationCallback: validatePasswordConfirm,
+  },
 };
-
-export const SIGN_UP_FORM_SETTINGS: FormSettingsType = [
-  {
-    ...commonSettings,
-    ...EMAIL_INPUT_SETTINGS,
-    id: 'email',
-    name: 'email',
-    label: 'E-mail',
-  },
-  {
-    ...commonSettings,
-    ...PASSWORD_INPUT_SETTINGS,
-    id: 'password',
-    name: 'password',
-    label: 'Password',
-  },
-  {
-    ...commonSettings,
-    ...PASSWORD_INPUT_SETTINGS,
-    id: 'confirmPassword',
-    name: 'confirm-password',
-    label: 'Confirm Password',
-  },
-];
